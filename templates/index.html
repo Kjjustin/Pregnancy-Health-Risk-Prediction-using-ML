@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maternal Health Risk Predictor</title>
+    <style>
+        body {
+            background-color: pink; /* Add your preferred background color */
+            color: #333; /* Dark gray text color for good contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        .container img {
+            max-width: 50%;
+            height: auto;
+            margin-right: 20px;
+            flex: 1;
+        }
+
+        .container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        form label {
+            margin-bottom: 5px;
+        }
+
+        form input {
+            margin-bottom: 5px;
+        }
+
+        form button {
+            margin-top: 5px;
+            margin-bottom: 10px; 
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Add your image here -->
+        <img src="{{ url_for('static', filename='pregnancy_risk_image.jpg') }}" alt="Pregnancy Risk">
+
+        <div>
+            <h1>Maternal Health Risk Predictor</h1>
+            <form id="prediction-form">
+                <label for="Age">Age:</label>
+                <input type="number" id="Age" name="Age" required>
+                <span class="error-message" id="AgeError"></span><br>
+
+                <label for="SystolicBP">Systolic Blood Pressure:</label>
+                <input type="number" id="SystolicBP" name="SystolicBP" required>
+                <span class="error-message" id="SystolicBPError"></span><br>
+
+                <label for="DiastolicBP">Diastolic Blood Pressure:</label>
+                <input type="number" id="DiastolicBP" name="DiastolicBP" required>
+                <span class="error-message" id="DiastolicBPError"></span><br>
+
+                <label for="BS">Blood Sugar:</label>
+                <input type="number" id="BS" name="BS" required>
+                <span class="error-message" id="BSError"></span><br>
+
+                <label for="BodyTemp">Body Temperature:</label>
+                <input type="number" id="BodyTemp" name="BodyTemp" required>
+                <span class="error-message" id="BodyTempError"></span><br>
+
+                <label for="HeartRate">Heart Rate:</label>
+                <input type="number" id="HeartRate" name="HeartRate" required>
+                <span class="error-message" id="HeartRateError"></span><br>
+
+                <button type="button" onclick="predict()">Predict</button>
+            </form>
+
+            <div id="prediction-result"></div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            const age = document.getElementById('Age').value;
+            const systolicBP = document.getElementById('SystolicBP').value;
+            const diastolicBP = document.getElementById('DiastolicBP').value;
+            const bs = document.getElementById('BS').value;
+            const bodyTemp = document.getElementById('BodyTemp').value;
+            const heartRate = document.getElementById('HeartRate').value;
+
+            // Clear previous error messages
+            document.getElementById('AgeError').innerText = '';
+            document.getElementById('SystolicBPError').innerText = '';
+            document.getElementById('DiastolicBPError').innerText = '';
+            document.getElementById('BSError').innerText = '';
+            document.getElementById('BodyTempError').innerText = '';
+            document.getElementById('HeartRateError').innerText = '';
+
+            // Validate Age
+            if (age < 3 || age > 100) {
+                document.getElementById('AgeError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            // Validate Systolic Blood Pressure
+            if (systolicBP < 0 || systolicBP > 500) {
+                document.getElementById('SystolicBPError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            // Validate Diastolic Blood Pressure
+            if (diastolicBP < 0 || diastolicBP > 500) {
+                document.getElementById('DiastolicBPError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            // Validate Blood Sugar
+            if (bs < 0 || bs > 1000) {
+                document.getElementById('BSError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            // Validate Body Temperature
+            if (bodyTemp < 40 || bodyTemp > 120) {
+                document.getElementById('BodyTempError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            // Validate Heart Rate
+            if (heartRate < 0 || heartRate > 200) {
+                document.getElementById('HeartRateError').innerText = 'Invalid';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function predict() {
+            if (!validateForm()) {
+                return;
+            }
+
+            // Get form data
+            var formData = {
+                'Age': document.getElementById('Age').value,
+                'SystolicBP': document.getElementById('SystolicBP').value,
+                'DiastolicBP': document.getElementById('DiastolicBP').value,
+                'BS': document.getElementById('BS').value,
+                'BodyTemp': document.getElementById('BodyTemp').value,
+                'HeartRate': document.getElementById('HeartRate').value
+            };
+
+            // Send POST request to Flask app
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display prediction result
+                document.getElementById('prediction-result').innerText = 'Prediction: ' + data.prediction;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
