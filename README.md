@@ -1,6 +1,6 @@
 # Maternal Health Risk
 
-![Alt text](https://raw.githubusercontent.com/raviatkumar/Maternal-Health-Risk/main/Image/Meternal.jpg)
+https://github.com/Kjjustin/Pregnancy-Health-Risk-Prediction-using-ML/blob/main/static/pregnancy_risk_image.jpg?raw=true
 
 ## Output
 ![Alt text](https://raw.githubusercontent.com/raviatkumar/Maternal-Health-Risk/main/Output/maternal.PNG)
