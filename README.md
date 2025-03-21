@@ -116,3 +116,10 @@ There seems to be a positive correlation between memory and risk level, with hig
 
 Best Model for Deployment:
 Considering overall accuracy, balanced performance, and class-wise metrics, the Catboost model emerges as the most suitable for deployment. It achieves the highest overall accuracy, maintains strong precision and recall across classes, and exhibits slightly better performance than LGBM. Deploying the Catboost model would likely result in a robust and accurate classification system for the given task.
+
+## License
+- This project is licensed under the MIT License.
+
+## Contact
+- For queries or suggestions, reach out to [K J Justin](https://github.com/Kjjustin/Pregnancy-Health-Risk-Prediction-using-ML/issues).
+
